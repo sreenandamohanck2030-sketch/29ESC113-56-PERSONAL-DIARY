@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <string.h>
+
+struct Diary
+{
+    char date[15];
+    char entry[200];
+};
+
+int main()
+{
+    struct Diary d[100];
+    char searchDate[15];
+    int choice, count = 0, i, found;
+
+    do
+    {
+        // Display Menu
+        printf("\n===== PERSONAL DIARY =====\n");
+        printf("1. Add Entry\n");
+        printf("2. View All Entries\n");
+        printf("3. Search by Date\n");
+        printf("4. Exit\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        getchar();
+
+        // Check User Choice
+        switch(choice)
+        {
+            // 1. Add Entry
+            case 1:
+                if(count < 100)
+                {
+                    printf("Enter date (DD-MM-YYYY): ");
+                    fgets(d[count].date, 15, stdin);
+                    d[count].date[strcspn(d[count].date, "\n")] = '\0';
+
+                    printf("Enter one line of text: ");
+                    fgets(d[count].entry, 200, stdin);
+                    d[count].entry[strcspn(d[count].entry, "\n")] = '\0';
+
+                    count++;
+
+                    printf("\nEntry Added Successfully!\n");
+                }
+                else
+                {
+                    printf("Diary is full!\n");
+                }
+                break;
+
+            // 2. View All Entries
+            case 2:
+                if(count == 0)
+                {
+                    printf("No entries available.\n");
+                }
+                else
+                {
+                    printf("\n===== ALL DIARY ENTRIES =====\n");
+
+                    for(i = 0; i < count; i++)
+                    {
+                        printf("\nDate: %s\n", d[i].date);
+                        printf("Entry: %s\n", d[i].entry);
+                    }
+                }
+                break;
+
+            // 3. Search Entry by Date
+            case 3:
+                printf("Enter date to search: ");
+                fgets(searchDate, 15, stdin);
+                searchDate[strcspn(searchDate, "\n")] = '\0';
+
+                found = 0;
+
+                for(i = 0; i < count; i++)
+                {
+                    if(strcmp(d[i].date, searchDate) == 0)
+                    {
+                        printf("\nEntry Found!\n");
+                        printf("Date: %s\n", d[i].date);
+                        printf("Entry: %s\n", d[i].entry);
+
+                        found = 1;
+                    }
+                }
+
+                if(found == 0)
+                {
+                    printf("Entry Not Found!\n");
+                }
+                break;
+
+            // 4. Exit
+            case 4:
+                printf("Thank you for using Personal Diary!\n");
+                break;
+
+            // Invalid Choice
+            default:
+                printf("Invalid Choice! Try Again.\n");
+        }
+
+    } while(choice != 4);
+
+    return 0;
+}
